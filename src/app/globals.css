@@ -123,3 +123,28 @@ body {
     transform: scale(1);
   }
 }
+
+/* Trang trí Tết */
+.deco-float {
+  animation: decoFloat 4s ease-in-out infinite;
+}
+
+@keyframes decoFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+}
+
+.deco-twinkle {
+  animation: decoTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes decoTwinkle {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.deco-float-delay-1 { animation-delay: 0.5s; }
+.deco-float-delay-2 { animation-delay: 1s; }
+.deco-float-delay-3 { animation-delay: 1.5s; }
+.deco-float-delay-4 { animation-delay: 2s; }
+.deco-float-delay-5 { animation-delay: 2.5s; }

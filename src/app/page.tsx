@@ -156,21 +156,91 @@ export default function Home() {
         />
       </div>
 
+      {/* Hoa văn góc - trang trí vàng */}
+      <div className="absolute top-0 left-0 w-20 h-20 sm:w-24 sm:h-24 pointer-events-none z-0 opacity-40" aria-hidden>
+        <svg viewBox="0 0 80 80" className="w-full h-full text-yellow-400" fill="currentColor">
+          <path d="M0 0h8v8H0V0zm12 0h8v8h-8V0zm24 0h8v8h-8V0zm12 0h8v8h-8V0zM0 12h8v8H0v-8zm0 24h8v8H0v-8zM0 12h8v8H0v-8zm12 12h8v8h-8v-8zm24 0h8v8h-8v-8zm12 0h8v8h-8v-8z" opacity="0.9" />
+          <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+          <circle cx="40" cy="40" r="16" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+        </svg>
+      </div>
+      <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 pointer-events-none z-0 opacity-40 scale-x-[-1]" aria-hidden>
+        <svg viewBox="0 0 80 80" className="w-full h-full text-yellow-400" fill="currentColor">
+          <path d="M0 0h8v8H0V0zm12 0h8v8h-8V0zm24 0h8v8h-8V0zm12 0h8v8h-8V0zM0 12h8v8H0v-8zm0 24h8v8H0v-8zM0 12h8v8H0v-8zm12 12h8v8h-8v-8zm24 0h8v8h-8v-8zm12 0h8v8h-8v-8z" opacity="0.9" />
+          <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+          <circle cx="40" cy="40" r="16" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+        </svg>
+      </div>
+      <div className="absolute bottom-0 left-0 w-20 h-20 sm:w-24 sm:h-24 pointer-events-none z-0 opacity-40 scale-y-[-1]" aria-hidden>
+        <svg viewBox="0 0 80 80" className="w-full h-full text-yellow-400" fill="currentColor">
+          <path d="M0 0h8v8H0V0zm12 0h8v8h-8V0zm24 0h8v8h-8V0zm12 0h8v8h-8V0zM0 12h8v8H0v-8zm0 24h8v8H0v-8zM0 12h8v8H0v-8zm12 12h8v8h-8v-8zm24 0h8v8h-8v-8zm12 0h8v8h-8v-8z" opacity="0.9" />
+          <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+          <circle cx="40" cy="40" r="16" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+        </svg>
+      </div>
+      <div className="absolute bottom-0 right-0 w-20 h-20 sm:w-24 sm:h-24 pointer-events-none z-0 opacity-40 scale-[-1]" aria-hidden>
+        <svg viewBox="0 0 80 80" className="w-full h-full text-yellow-400" fill="currentColor">
+          <path d="M0 0h8v8H0V0zm12 0h8v8h-8V0zm24 0h8v8h-8V0zm12 0h8v8h-8V0zM0 12h8v8H0v-8zm0 24h8v8H0v-8zM0 12h8v8H0v-8zm12 12h8v8h-8v-8zm24 0h8v8h-8v-8zm12 0h8v8h-8v-8z" opacity="0.9" />
+          <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+          <circle cx="40" cy="40" r="16" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+        </svg>
+      </div>
+
+      {/* Đồng xu / sao vàng rải rác */}
+      {[
+        { x: "8%", y: "18%", s: "text-lg", delay: "deco-float-delay-1" },
+        { x: "92%", y: "22%", s: "text-xl", delay: "deco-float-delay-2" },
+        { x: "15%", y: "78%", s: "text-base", delay: "deco-float-delay-3" },
+        { x: "88%", y: "75%", s: "text-lg", delay: "deco-float-delay-4" },
+        { x: "5%", y: "48%", s: "text-sm", delay: "deco-float-delay-5" },
+        { x: "94%", y: "52%", s: "text-base", delay: "deco-float-delay-1" },
+      ].map((item, d) => (
+        <div
+          key={d}
+          className={`absolute pointer-events-none z-0 deco-float deco-twinkle ${item.delay} ${item.s}`}
+          style={{ left: item.x, top: item.y }}
+          aria-hidden
+        >
+          <span className="opacity-70">🪙</span>
+        </div>
+      ))}
+
+      {/* Dải hoa văn trên cùng */}
+      <div className="absolute top-0 left-0 right-0 h-2 sm:h-3 z-0 pointer-events-none bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent" aria-hidden />
+      <div className="absolute bottom-0 left-0 right-0 h-2 sm:h-3 z-0 pointer-events-none bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent" aria-hidden />
+
       {/* Vùng nội dung căn giữa, nền đỏ full màn hình bên ngoài */}
       <div className="flex-1 flex flex-col max-w-md mx-auto w-full relative z-10">
-      {/* Đèn lồng phía trên */}
+      {/* Đèn lồng phía trên - có tua vàng */}
       <div className="absolute top-0 left-0 right-0 flex justify-between px-8 pt-2 z-10">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="flex flex-col items-center lantern-sway">
-            <div className="w-1 h-6 bg-yellow-400 rounded-full" />
-            <div className="w-10 h-12 bg-red-700 rounded-xl border-2 border-yellow-400 shadow-lg" />
+          <div key={i} className={`flex flex-col items-center lantern-sway ${i === 2 ? "lantern-sway" : ""}`} style={i === 2 ? { animationDelay: "0.5s" } : undefined}>
+            <div className="w-1 h-5 bg-yellow-400 rounded-full" />
+            <div className="w-10 h-12 bg-red-700 rounded-xl border-2 border-yellow-400 shadow-lg relative">
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-2 bg-yellow-500/90 rounded-b-sm" />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5">
+                {[1, 2, 3].map((t) => (
+                  <div key={t} className="w-0.5 h-2 bg-yellow-500/80 rounded-full" />
+                ))}
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6 pt-20 pb-8">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 pt-20 pb-8 relative">
+        {/* Hoa mai trang trí hai bên */}
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-6 opacity-50" aria-hidden>
+          <span className="text-2xl deco-float deco-float-delay-1">🌸</span>
+          <span className="text-xl deco-float deco-float-delay-3">🌺</span>
+        </div>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-6 opacity-50" aria-hidden>
+          <span className="text-xl deco-float deco-float-delay-2">🌸</span>
+          <span className="text-2xl deco-float deco-float-delay-4">🌺</span>
+        </div>
+
         {/* Năm Bính Ngọ */}
-        <div className="mb-6 bg-yellow-400/20 p-2 rounded-full border border-yellow-400/40 backdrop-blur-md">
+        <div className="mb-6 bg-yellow-400/20 p-2 rounded-full border border-yellow-400/40 backdrop-blur-md shadow-lg">
           <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 p-4 rounded-full shadow-inner">
             <span className="text-white text-4xl" aria-hidden>🐴</span>
           </div>
@@ -356,7 +426,14 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="p-6 pt-4 pb-8 bg-gradient-to-t from-black/20 to-transparent text-center">
+      <footer className="p-6 pt-4 pb-8 bg-gradient-to-t from-black/20 to-transparent text-center relative">
+        <div className="flex justify-center gap-3 mb-2 opacity-60" aria-hidden>
+          <span className="text-sm">🧧</span>
+          <span className="text-sm">🪙</span>
+          <span className="text-sm">🌸</span>
+          <span className="text-sm">🪙</span>
+          <span className="text-sm">🧧</span>
+        </div>
         <p className="text-white/50 text-xs">Lì xì Tết Bính Ngọ 2026</p>
       </footer>
       </div>

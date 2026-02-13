@@ -29,8 +29,16 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Biến môi trường
+
+- `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`: Gửi thông báo + webhook bot (nhận lì xì, `/reset`).
+- **Lưu lịch sử lì xì trên Vercel:** Mặc định trên Vercel dữ liệu ghi vào `/tmp` không bền (mất khi cold start). Để lưu bền, thêm **Upstash Redis** (Vercel Marketplace → Upstash Redis), sau đó cấu hình:
+  - `UPSTASH_REDIS_REST_URL`
+  - `UPSTASH_REDIS_REST_TOKEN`  
+  Khi có hai biến này, app sẽ lưu/đọc danh sách lì xì từ Redis thay vì file.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Lưu ý:** Để lịch sử nhận lì xì và lệnh `/reset` hoạt động ổn định trên Vercel, nên thêm storage **Upstash Redis** (Marketplace) và khai báo đủ biến môi trường như trên.

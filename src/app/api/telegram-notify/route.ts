@@ -1,27 +1,42 @@
 import { NextResponse } from "next/server";
 import { appendLixi } from "../../lib/lixi-store";
+import { getRandomAmount } from "../../data/amounts";
+import { CAU_CHUC_TET } from "../../data/wishes";
 
 const TELEGRAM_API = "https://api.telegram.org/bot";
+
+function getRandomWish() {
+  return CAU_CHUC_TET[Math.floor(Math.random() * CAU_CHUC_TET.length)];
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { nameOrTitle, bank, account, amount, wish, transactionId } = body as {
+    const { nameOrTitle, bank, account } = body as {
       nameOrTitle?: string;
       bank?: string;
       account?: string;
-      amount?: number;
-      wish?: string;
-      transactionId?: string;
     };
+
+    if (!bank || !account) {
+      return NextResponse.json(
+        { ok: false, error: "Thiếu thông tin bank hoặc account" },
+        { status: 400 }
+      );
+    }
+
+    // Backend tự generate số tiền và câu chúc
+    const amount = getRandomAmount();
+    const wish = getRandomWish();
+    const transactionId = `TET2026-${Date.now().toString(36).toUpperCase()}`;
 
     const payload = {
       nameOrTitle: nameOrTitle ?? "",
-      bank: bank ?? "",
-      account: account ?? "",
-      amount: amount ?? 0,
-      wish: wish ?? "",
-      transactionId: transactionId ?? "",
+      bank: bank.trim(),
+      account: account.trim(),
+      amount,
+      wish,
+      transactionId,
     };
 
     // Luôn thử lưu vào lixi-list.json (trên Vercel có thể thất bại hoặc chỉ lưu tạm /tmp)
@@ -74,7 +89,14 @@ ${JSON.stringify(payload, null, 2)}
       }
     }
 
-    return NextResponse.json({ ok: true, savedToList, listError: listError ?? undefined });
+    return NextResponse.json({
+      ok: true,
+      savedToList,
+      listError: listError ?? undefined,
+      amount,
+      wish,
+      transactionId,
+    });
   } catch (e) {
     return NextResponse.json(
       { ok: false, error: e instanceof Error ? e.message : "Lỗi xử lý" },

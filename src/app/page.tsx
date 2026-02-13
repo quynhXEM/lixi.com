@@ -3,10 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Fireworks } from "./components/Fireworks";
 import { Confetti } from "./components/Confetti";
+import { EmojiConfetti } from "./components/EmojiConfetti";
+import { ReactionBubble } from "./components/ReactionBubble";
+import { LuckBar } from "./components/LuckBar";
+import { FakeComments } from "./components/FakeComments";
 import { playCelebrationSound } from "./components/CelebrationSound";
 import { CAU_CHUC_TET } from "./data/wishes";
 import { BANKS_VIETNAM } from "./data/banks";
-import { getRandomAmount, formatAmount } from "./data/amounts";
+import { formatAmount } from "./data/amounts";
 
 const STORAGE_KEY = "lixi_tet2026_binh_ngo";
 const BANK_OTHER = "Khác (gõ tên bên dưới)";
@@ -36,6 +40,8 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [showFireworks, setShowFireworks] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showEmojiConfetti, setShowEmojiConfetti] = useState(false);
+  const [showReaction, setShowReaction] = useState(false);
   const alreadyReceivedCelebrationDone = useRef(false);
 
   useEffect(() => {
@@ -58,54 +64,64 @@ export default function Home() {
   useEffect(() => {
     if (!mounted || view !== "already_received" || alreadyReceivedCelebrationDone.current) return;
     alreadyReceivedCelebrationDone.current = true;
-    const t = setTimeout(() => {
+      const t = setTimeout(() => {
       setShowConfetti(true);
       setShowFireworks(true);
-      playCelebrationSound();
+      setShowEmojiConfetti(true);
+      setShowReaction(true);
+      playCelebrationSound(saved?.amount);
     }, 400);
     return () => clearTimeout(t);
   }, [mounted, view]);
 
   const handleNhanLixi = () => {
     setView("form");
+    setShowEmojiConfetti(false);
+    setShowReaction(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const bank = bankSelect === BANK_OTHER ? bankCustom.trim() : bankSelect;
     if (!bank || !account.trim()) return;
-    const amount = getRandomAmount();
-    const wish = getRandomWish();
-    const transactionId = `TET2026-${Date.now().toString(36).toUpperCase()}`;
-    const data: SavedData = {
-      nameOrTitle: nameOrTitle.trim() || undefined,
-      bank,
-      account: account.trim(),
-      amount,
-      wish,
-      transactionId,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    setSaved(data);
-    setView("received");
-    setShowConfetti(true);
-    setShowFireworks(true);
-    playCelebrationSound();
+
     try {
-      await fetch("/api/telegram-notify", {
+      const res = await fetch("/api/telegram-notify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nameOrTitle: data.nameOrTitle,
-          bank: data.bank,
-          account: data.account,
-          amount: data.amount,
-          wish: data.wish,
-          transactionId: data.transactionId,
+          nameOrTitle: nameOrTitle.trim() || undefined,
+          bank,
+          account: account.trim(),
         }),
       });
-    } catch {
-      // bỏ qua nếu gửi Telegram lỗi
+
+      const result = await res.json();
+      if (!result.ok) {
+        alert(result.error || "Lỗi khi nhận lì xì");
+        return;
+      }
+
+      // Nhận số tiền, câu chúc, transactionId từ API
+      const data: SavedData = {
+        nameOrTitle: nameOrTitle.trim() || undefined,
+        bank,
+        account: account.trim(),
+        amount: result.amount,
+        wish: result.wish,
+        transactionId: result.transactionId,
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      setSaved(data);
+      setView("received");
+      setShowConfetti(true);
+      setShowFireworks(true);
+      setShowEmojiConfetti(true);
+      setShowReaction(true);
+      playCelebrationSound(data.amount);
+    } catch (e) {
+      alert("Lỗi kết nối. Vui lòng thử lại.");
     }
   };
 
@@ -139,6 +155,8 @@ export default function Home() {
       {/* Pháo hoa & confetti */}
       <Fireworks active={showFireworks} />
       <Confetti trigger={showConfetti} />
+      <EmojiConfetti trigger={showEmojiConfetti} amount={saved?.amount ?? null} />
+      <ReactionBubble amount={saved?.amount ?? null} show={showReaction} />
 
       {/* Nền trang trí */}
       <div className="absolute inset-0 pointer-events-none opacity-30 z-0">
@@ -381,6 +399,10 @@ export default function Home() {
               </div>
             </div>
 
+            <LuckBar amount={saved.amount} />
+
+            <FakeComments amount={saved.amount} show={showReaction} />
+
             <div className="mt-8 w-full text-center px-4 py-6 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl celebrate-fade-in">
               <p className="font-calligraphy text-yellow-200 text-2xl leading-relaxed drop-shadow-md whitespace-pre-line">
                 &quot;{displayWish}&quot;
@@ -427,23 +449,27 @@ export default function Home() {
             </p>
 
             {saved && (
-              <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl text-center celebrate-scale-in glow-pulse relative overflow-hidden mb-6">
-                <div className="absolute inset-0 shimmer-gold pointer-events-none rounded-2xl" aria-hidden />
-                <span className="text-yellow-300 text-sm font-medium uppercase tracking-tight block mb-2">
-                  Số tiền lộc đã nhận
-                </span>
-                <div className="flex items-baseline justify-center gap-1 relative">
-                  <span className="text-white text-4xl font-black tracking-tight drop-shadow-md">
-                    {formatAmount(saved.amount)}
+              <>
+                <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl text-center celebrate-scale-in glow-pulse relative overflow-hidden mb-6">
+                  <div className="absolute inset-0 shimmer-gold pointer-events-none rounded-2xl" aria-hidden />
+                  <span className="text-yellow-300 text-sm font-medium uppercase tracking-tight block mb-2">
+                    Số tiền lộc đã nhận
                   </span>
-                  <span className="text-yellow-400 text-xl font-bold">đ</span>
+                  <div className="flex items-baseline justify-center gap-1 relative">
+                    <span className="text-white text-4xl font-black tracking-tight drop-shadow-md">
+                      {formatAmount(saved.amount)}
+                    </span>
+                    <span className="text-yellow-400 text-xl font-bold">đ</span>
+                  </div>
+                  <div className="mt-4 flex items-center justify-center gap-2 text-white/50 text-xs uppercase tracking-widest">
+                    <span className="w-8 h-px bg-white/20" />
+                    <span>Phát tài - Phát lộc</span>
+                    <span className="w-8 h-px bg-white/20" />
+                  </div>
                 </div>
-                <div className="mt-4 flex items-center justify-center gap-2 text-white/50 text-xs uppercase tracking-widest">
-                  <span className="w-8 h-px bg-white/20" />
-                  <span>Phát tài - Phát lộc</span>
-                  <span className="w-8 h-px bg-white/20" />
-                </div>
-              </div>
+                <LuckBar amount={saved.amount} />
+                <FakeComments amount={saved.amount} show={showReaction} />
+              </>
             )}
 
             <div className="w-full text-center px-4 py-6 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl celebrate-fade-in">

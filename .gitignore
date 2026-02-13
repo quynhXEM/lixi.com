@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# data (danh sách lì xì - lưu tại máy, đồng bộ từ tin nhắn bot)
+/data/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

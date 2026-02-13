@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { appendLixi } from "../../lib/lixi-store";
 
 const TELEGRAM_API = "https://api.telegram.org/bot";
 
@@ -56,6 +57,21 @@ ${JSON.stringify(payload, null, 2)}
         { ok: false, error: data.description ?? "Telegram API lỗi" },
         { status: 502 }
       );
+    }
+
+    // Lưu vào JSON (cùng nguồn dữ liệu với tin nhắn bot) để trang bảng xếp hạng đọc
+    try {
+      await appendLixi({
+        id: payload.transactionId || `TET2026-${Date.now()}`,
+        nameOrTitle: payload.nameOrTitle || undefined,
+        bank: payload.bank,
+        account: payload.account,
+        amount: payload.amount,
+        wish: payload.wish,
+        transactionId: payload.transactionId,
+      });
+    } catch {
+      // Bỏ qua nếu ghi file lỗi (vd: môi trường serverless read-only)
     }
 
     return NextResponse.json({ ok: true });

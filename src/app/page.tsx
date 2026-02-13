@@ -422,6 +422,22 @@ export default function Home() {
                 &quot;{getRandomWish()}&quot;
               </p>
             </div>
+            <div className="mt-6 flex flex-col gap-3 w-full max-w-xs mx-auto">
+              <button
+                type="button"
+                onClick={handleNhanLixi}
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+              >
+                <span>🧧</span>
+                Nhận thêm lì xì
+              </button>
+              <a
+                href="/bang-xep-hang"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center text-sm"
+              >
+                Xem bảng xếp hạng
+              </a>
+            </div>
           </>
         )}
       </main>
@@ -435,6 +451,9 @@ export default function Home() {
           <span className="text-sm">🧧</span>
         </div>
         <p className="text-white/50 text-xs">Lì xì Tết Bính Ngọ 2026</p>
+        <a href="/bang-xep-hang" className="inline-block mt-2 text-yellow-300/80 text-xs hover:underline">
+          Bảng xếp hạng
+        </a>
       </footer>
       </div>
     </div>

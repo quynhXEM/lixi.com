@@ -2,25 +2,60 @@
 
 import { useEffect, useState } from "react";
 
-const FAKE_NAMES = ["Minh", "Lan", "Tú", "Hương", "Đức", "An", "Vy", "Nam", "Hoa", "Long"];
+const FAKE_NAMES = ["Minh", "Lan", "Tú", "Hương", "Đức", "An", "Vy", "Nam", "Hoa", "Long", "Quang", "Mai", "Hùng", "Thảo", "Dũng"];
 const HIGH_COMMENTS = [
   "Trúng ghê vậy 😭",
   "Cho xin víaaaa ✨",
   "Ghen tị nhẹ 😏",
   "Quá đỉnh luôn! 🔥",
   "Xin vía cho tui với 🥺",
+  "Vía đỏ quá! 🍀",
+  "Trúng số rồi à 😱",
+  "Cho em xin vía đi 🥹",
+  "Đỉnh của chóp! 💯",
+  "May mắn quá trời! 🌟",
+  "Tui cũng muốn như vậy 😭",
+  "Vía quá mạnh! ⚡",
+  "Đỉnh cao! 🏆",
+  "Ghen tị thật sự 😤",
+  "Xin vía đỏ! 🔴",
+  "Quá may mắn! 🎰",
+  "Vía đang đỏ đó! 👀",
+  "Trúng lớn rồi! 💰",
 ];
 const MID_COMMENTS = [
   "Ổn áp nhỉ 😊",
   "Cũng được đó",
   "Tạm ổn",
   "Không tồi",
+  "Ổn đấy 👍",
+  "Cũng ổn",
+  "Tạm được",
+  "Không đến nỗi",
+  "Ổn rồi đó",
+  "Cũng hay",
+  "Tạm chấp nhận được",
+  "Không tệ",
+  "Ổn áp phết",
+  "Cũng ổn đấy chứ",
+  "Tạm ổn rồi",
 ];
 const LOW_COMMENTS = [
   "Thôi cũng được rồi 😅",
-  "Cố gắng lần sau nhé",
+  "Năm sau phục thù",
   "Không sao đâu",
   "Vẫn là lộc mà",
+  "Cũng là may rồi",
+  "Không sao cả",
+  "Vẫn tốt hơn không có",
+  "Năm sau cố gắng",
+  "Cũng được rồi",
+  "Không đến nỗi tệ",
+  "Vẫn là may mắn",
+  "Cố gắng lần sau",
+  "Không sao đâu bạn",
+  "Vẫn là lộc xuân",
+  "Cũng ổn rồi",
 ];
 
 function getComments(amount: number): string[] {

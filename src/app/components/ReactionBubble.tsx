@@ -22,13 +22,13 @@ const REACTIONS: Record<ReactionLevel, Reaction> = {
     level: "mid",
     emoji: "🙂",
     text: "Ổn áp, đủ sống qua Tết.",
-    color: "from-green-400 to-green-600",
+    color: "from-yellow-200 to-yellow-500",
   },
   low: {
     level: "low",
     emoji: "🤡",
     text: "Thôi… cũng là cái duyên.",
-    color: "from-gray-400 to-gray-600",
+    color: "from-gray-400 to-yellow-300",
   },
 };
 
@@ -55,7 +55,7 @@ export function ReactionBubble({ amount, show }: { amount: number | null; show: 
   const reaction = REACTIONS[level];
 
   return (
-    <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[8] animate-bounce-in">
+    <div className="fixed bottom-24 left-1/2 z-[8]" style={{ transform: "translateX(-50%)" }}>
       <div
         className={`bg-gradient-to-r ${reaction.color} text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 min-w-[280px] max-w-[90vw]`}
         style={{
@@ -69,11 +69,11 @@ export function ReactionBubble({ amount, show }: { amount: number | null; show: 
         @keyframes slideUpBubble {
           from {
             opacity: 0;
-            transform: translate(-50%, 20px);
+            transform: translateY(30px);
           }
           to {
             opacity: 1;
-            transform: translate(-50%, 0);
+            transform: translateY(0);
           }
         }
       `}</style>

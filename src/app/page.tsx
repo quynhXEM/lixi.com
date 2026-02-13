@@ -207,7 +207,7 @@ export default function Home() {
       ].map((item, d) => (
         <div
           key={d}
-          className={`absolute pointer-events-none z-0 deco-float deco-twinkle ${item.delay} ${item.s}`}
+          className={`absolute pointer-events-none z-0 deco-float-twinkle ${item.delay} ${item.s}`}
           style={{ left: item.x, top: item.y }}
           aria-hidden
         >

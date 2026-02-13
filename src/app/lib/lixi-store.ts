@@ -14,7 +14,12 @@ export type LixiRecord = {
 
 function getDataPath(): string {
   if (process.env.LIXI_DATA_PATH) return process.env.LIXI_DATA_PATH;
-  return path.join(process.cwd(), "data", "lixi-list.json");
+  // Serverless (Vercel, Lambda): cwd thường chỉ đọc, dùng /tmp để ghi được
+  const cwd = process.cwd();
+  if (process.env.VERCEL === "1" || cwd === "/var/task" || cwd.startsWith("/var/task/")) {
+    return path.join("/tmp", "data", "lixi-list.json");
+  }
+  return path.join(cwd, "data", "lixi-list.json");
 }
 
 export async function appendLixi(record: Omit<LixiRecord, "createdAt">): Promise<void> {

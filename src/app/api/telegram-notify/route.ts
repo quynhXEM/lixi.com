@@ -4,16 +4,6 @@ import { appendLixi } from "../../lib/lixi-store";
 const TELEGRAM_API = "https://api.telegram.org/bot";
 
 export async function POST(request: Request) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-
-  if (!token || !chatId) {
-    return NextResponse.json(
-      { ok: false, error: "Telegram chưa cấu hình (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)" },
-      { status: 500 }
-    );
-  }
-
   try {
     const body = await request.json();
     const { nameOrTitle, bank, account, amount, wish, transactionId } = body as {
@@ -34,32 +24,9 @@ export async function POST(request: Request) {
       transactionId: transactionId ?? "",
     };
 
-    const text = `🧧 **Lì xì Tết 2026 - Có người vừa nhận lộc**
-
-\`\`\`json
-${JSON.stringify(payload, null, 2)}
-\`\`\``;
-
-    const url = `${TELEGRAM_API}${token}/sendMessage`;
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text,
-        parse_mode: "Markdown",
-      }),
-    });
-
-    const data = await res.json().catch(() => ({}));
-    if (!data.ok) {
-      return NextResponse.json(
-        { ok: false, error: data.description ?? "Telegram API lỗi" },
-        { status: 502 }
-      );
-    }
-
-    // Lưu vào JSON (cùng nguồn dữ liệu với tin nhắn bot) để trang bảng xếp hạng đọc
+    // Luôn thử lưu vào lixi-list.json (trên Vercel có thể thất bại hoặc chỉ lưu tạm /tmp)
+    let savedToList = false;
+    let listError: string | undefined;
     try {
       await appendLixi({
         id: payload.transactionId || `TET2026-${Date.now()}`,
@@ -70,14 +37,47 @@ ${JSON.stringify(payload, null, 2)}
         wish: payload.wish,
         transactionId: payload.transactionId,
       });
-    } catch {
-      // Bỏ qua nếu ghi file lỗi (vd: môi trường serverless read-only)
+      savedToList = true;
+    } catch (e) {
+      listError = e instanceof Error ? e.message : "Lỗi ghi file";
+      // Không throw — vẫn gửi Telegram nếu có, trả về ok kèm savedToList: false
     }
 
-    return NextResponse.json({ ok: true });
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    if (token && chatId) {
+      const text = `🧧 **Lì xì Tết 2026 - Có người vừa nhận lộc**
+
+\`\`\`json
+${JSON.stringify(payload, null, 2)}
+\`\`\``;
+
+      const url = `${TELEGRAM_API}${token}/sendMessage`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text,
+          parse_mode: "Markdown",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!data.ok) {
+        return NextResponse.json({
+          ok: true,
+          savedToList,
+          listError: listError ?? undefined,
+          telegram: false,
+          telegramError: data.description,
+        });
+      }
+    }
+
+    return NextResponse.json({ ok: true, savedToList, listError: listError ?? undefined });
   } catch (e) {
     return NextResponse.json(
-      { ok: false, error: e instanceof Error ? e.message : "Lỗi gửi Telegram" },
+      { ok: false, error: e instanceof Error ? e.message : "Lỗi xử lý" },
       { status: 500 }
     );
   }

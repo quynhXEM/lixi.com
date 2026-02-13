@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f6f6;
+  --foreground: #171717;
+  --primary: #c41e3a;
+  --primary-dark: #a31a20;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-display: var(--font-be-vietnam), system-ui, sans-serif;
+  --font-calligraphy: var(--font-great-vibes), cursive;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-be-vietnam), system-ui, sans-serif;
+}
+
+/* Trang lì xì Tết - màu sắc âm lịch VN */
+.festive-gradient {
+  background: linear-gradient(180deg, #c41e3a 0%, #a31a20 100%);
+}
+
+.lantern-sway {
+  animation: sway 3s ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Hiệu ứng chúc mừng */
+.celebrate-scale-in {
+  animation: celebrateScaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes celebrateScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.celebrate-fade-in {
+  animation: celebrateFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes celebrateFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shimmer-gold {
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(251, 191, 36, 0.4) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.5);
+  }
+}
+
+.chuc-mung-pop {
+  animation: chucMungPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+@keyframes chucMungPop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

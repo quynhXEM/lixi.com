@@ -55,21 +55,21 @@ export function ReactionBubble({ amount, show }: { amount: number | null; show: 
   const reaction = REACTIONS[level];
 
   return (
-    <div className="fixed bottom-24 left-1/2 z-[8]" style={{ transform: "translateX(-50%)" }}>
+    <div className="fixed top-24 left-1/2 z-40" style={{ transform: "translateX(-50%)" }}>
       <div
         className={`bg-gradient-to-r ${reaction.color} text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 min-w-[280px] max-w-[90vw]`}
         style={{
-          animation: "slideUpBubble 0.4s ease-out",
+          animation: "slideDownBubble 0.4s ease-out",
         }}
       >
         <span className="text-3xl">{reaction.emoji}</span>
         <p className="font-semibold text-sm leading-tight">{reaction.text}</p>
       </div>
       <style jsx>{`
-        @keyframes slideUpBubble {
+        @keyframes slideDownBubble {
           from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(-30px);
           }
           to {
             opacity: 1;

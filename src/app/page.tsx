@@ -298,7 +298,7 @@ export default function Home() {
         {view === "form" && (
           <>
             <h1 className="text-white text-xl font-extrabold text-center mb-6">
-              Điền thông tin nhận lộc
+              Ai là người may mắn ?
             </h1>
             <form
               onSubmit={handleSubmit}
@@ -306,14 +306,14 @@ export default function Home() {
             >
               <div>
                 <label htmlFor="nameOrTitle" className="block text-yellow-200 text-sm font-medium mb-1">
-                  Tên / Xưng hô (VD: bà ngoại, cô 6, chú Hùng...)
+                  Bạn là ai mà muốn nhận lì xì?
                 </label>
                 <input
                   id="nameOrTitle"
                   type="text"
                   value={nameOrTitle}
                   onChange={(e) => setNameOrTitle(e.target.value)}
-                  placeholder="Để biết ai nhận lì xì (không bắt buộc)"
+                  placeholder="Không quen không lì xì nha"
                   className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                 />
               </div>

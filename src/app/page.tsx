@@ -6,21 +6,13 @@ import { Confetti } from "./components/Confetti";
 import { playCelebrationSound } from "./components/CelebrationSound";
 import { CAU_CHUC_TET } from "./data/wishes";
 import { BANKS_VIETNAM } from "./data/banks";
+import { getRandomAmount, formatAmount } from "./data/amounts";
 
 const STORAGE_KEY = "lixi_tet2026_binh_ngo";
 const BANK_OTHER = "Khác (gõ tên bên dưới)";
 
 function getRandomWish() {
   return CAU_CHUC_TET[Math.floor(Math.random() * CAU_CHUC_TET.length)];
-}
-
-function getRandomAmount() {
-  const amounts = [68888, 88888, 168888, 268888, 368888, 518888, 688888, 888888];
-  return amounts[Math.floor(Math.random() * amounts.length)];
-}
-
-function formatAmount(n: number) {
-  return n.toLocaleString("vi-VN");
 }
 
 type SavedData = {
@@ -250,23 +242,37 @@ export default function Home() {
           Xuân Bính Ngọ 2026
         </h2>
 
-        {/* --- WELCOME: Nút nhận lì xì --- */}
+        {/* --- WELCOME: 3 option --- */}
         {view === "welcome" && (
           <>
             <h1 className="text-white text-2xl font-extrabold leading-tight text-center mb-2">
               Nhận lì xì Tết 2026
             </h1>
             <p className="text-white/80 text-sm text-center mb-8">
-              Bấm nút bên dưới để nhận lộc xuân
+              Chọn một trong các cách bên dưới
             </p>
-            <button
-              type="button"
-              onClick={handleNhanLixi}
-              className="w-full max-w-xs bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 px-6 rounded-full shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95"
-            >
-              <span className="text-2xl">🧧</span>
-              Nhận lì xì
-            </button>
+            <div className="w-full max-w-xs flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={handleNhanLixi}
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 px-6 rounded-full shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95"
+              >
+                <span className="text-2xl">🧧</span>
+                Bốc lì xì
+              </button>
+              <a
+                href="/boc-lien-tuc"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-full border border-white/20 text-center flex items-center justify-center gap-2 transition-all"
+              >
+                Bốc liên tục
+              </a>
+              <a
+                href="/bang-xep-hang"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-full border border-white/20 text-center"
+              >
+                Bảng xếp hạng
+              </a>
+            </div>
           </>
         )}
 
@@ -384,6 +390,29 @@ export default function Home() {
             {displayId && (
               <p className="text-white/40 text-xs mt-4">Mã giao dịch: {displayId}</p>
             )}
+
+            <div className="mt-6 flex flex-col gap-3 w-full max-w-xs mx-auto">
+              <button
+                type="button"
+                onClick={handleNhanLixi}
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+              >
+                <span>🧧</span>
+                Bốc lì xì
+              </button>
+              <a
+                href="/boc-lien-tuc"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
+              >
+                Bốc liên tục
+              </a>
+              <a
+                href="/bang-xep-hang"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
+              >
+                Bảng xếp hạng
+              </a>
+            </div>
           </>
         )}
 
@@ -429,13 +458,19 @@ export default function Home() {
                 className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
               >
                 <span>🧧</span>
-                Nhận thêm lì xì
+                Bốc lì xì
               </button>
               <a
-                href="/bang-xep-hang"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center text-sm"
+                href="/boc-lien-tuc"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center flex items-center justify-center"
               >
-                Xem bảng xếp hạng
+                Bốc liên tục
+              </a>
+              <a
+                href="/bang-xep-hang"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
+              >
+                Bảng xếp hạng
               </a>
             </div>
           </>
@@ -451,9 +486,14 @@ export default function Home() {
           <span className="text-sm">🧧</span>
         </div>
         <p className="text-white/50 text-xs">Lì xì Tết Bính Ngọ 2026</p>
-        <a href="/bang-xep-hang" className="inline-block mt-2 text-yellow-300/80 text-xs hover:underline">
-          Bảng xếp hạng
-        </a>
+        <div className="flex justify-center gap-4 mt-2">
+          <a href="/boc-lien-tuc" className="text-yellow-300/80 text-xs hover:underline">
+            Bốc liên tục
+          </a>
+          <a href="/bang-xep-hang" className="text-yellow-300/80 text-xs hover:underline">
+            Bảng xếp hạng
+          </a>
+        </div>
       </footer>
       </div>
     </div>

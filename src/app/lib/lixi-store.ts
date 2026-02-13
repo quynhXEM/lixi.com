@@ -29,15 +29,28 @@ export async function appendLixi(record: Omit<LixiRecord, "createdAt">): Promise
   } catch {
     list = [];
   }
+  if (full.transactionId && list.some((r) => r.transactionId === full.transactionId)) {
+    return;
+  }
   list.push(full);
   await writeFile(filePath, JSON.stringify(list, null, 2), "utf-8");
 }
 
-export async function getLixiList(): Promise<LixiRecord[]> {
+export async function resetLixiList(): Promise<void> {
+  const filePath = getDataPath();
+  const dir = path.dirname(filePath);
+  await mkdir(dir, { recursive: true });
+  await writeFile(filePath, "[]", "utf-8");
+}
+
+export async function getLixiList(sortBy: "amount" | "date" = "amount"): Promise<LixiRecord[]> {
   const filePath = getDataPath();
   try {
     const raw = await readFile(filePath, "utf-8");
     const list = JSON.parse(raw) as LixiRecord[];
+    if (sortBy === "date") {
+      return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }
     return list.sort((a, b) => {
       const byAmount = (b.amount ?? 0) - (a.amount ?? 0);
       if (byAmount !== 0) return byAmount;

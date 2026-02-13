@@ -15,8 +15,24 @@ const greatVibes = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  title: "Lì xì Tết 2026 - Bính Ngọ",
-  description: "Nhận lì xì Tết 2026 Bính Ngọ, lộc xuân an khang.",
+  title: "Lì xì Tết 2026 - Xuân Bính Ngọ",
+  description: "Nhận lì xì Tết 2026 Bính Ngọ. Lộc xuân an khang, vạn sự như ý.",
+  keywords: ["lì xì", "tết 2026", "bính ngọ", "lộc xuân", "tết âm lịch"],
+  authors: [{ name: "Lì xì Tết 2026" }],
+  creator: "Lì xì Tết 2026",
+  openGraph: {
+    title: "Lì xì Tết 2026 - Xuân Bính Ngọ",
+    description: "Nhận lì xì Tết 2026 Bính Ngọ. Lộc xuân an khang, vạn sự như ý.",
+    type: "website",
+    locale: "vi_VN",
+  },
+  twitter: {
+    card: "summary",
+    title: "Lì xì Tết 2026 - Xuân Bính Ngọ",
+    description: "Nhận lì xì Tết 2026 Bính Ngọ. Lộc xuân an khang, vạn sự như ý.",
+  },
+  themeColor: "#c41e3a",
+  robots: "index, follow",
 };
 
 export default function RootLayout({

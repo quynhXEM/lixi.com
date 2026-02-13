@@ -65,7 +65,7 @@ export default function Home() {
   useEffect(() => {
     if (!mounted || view !== "already_received" || alreadyReceivedCelebrationDone.current) return;
     alreadyReceivedCelebrationDone.current = true;
-      const t = setTimeout(() => {
+    const t = setTimeout(() => {
       setShowConfetti(true);
       setShowFireworks(true);
       setShowEmojiConfetti(true);
@@ -225,321 +225,346 @@ export default function Home() {
 
       {/* Vùng nội dung căn giữa, nền đỏ full màn hình bên ngoài */}
       <div className="flex-1 flex flex-col max-w-md mx-auto w-full relative z-10">
-      {/* Đèn lồng phía trên - có tua vàng */}
-      <div className="absolute top-0 left-0 right-0 flex justify-between px-8 pt-2 z-10">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className={`flex flex-col items-center lantern-sway ${i === 2 ? "lantern-sway" : ""}`} style={i === 2 ? { animationDelay: "0.5s" } : undefined}>
-            <div className="w-1 h-5 bg-yellow-400 rounded-full" />
-            <div className="w-10 h-12 bg-red-700 rounded-xl border-2 border-yellow-400 shadow-lg relative">
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-2 bg-yellow-500/90 rounded-b-sm" />
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5">
-                {[1, 2, 3].map((t) => (
-                  <div key={t} className="w-0.5 h-2 bg-yellow-500/80 rounded-full" />
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <main className="flex-1 flex flex-col items-center justify-center px-6 pt-20 pb-8 relative">
-        {/* Hoa mai trang trí hai bên */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-6 opacity-50" aria-hidden>
-          <span className="text-2xl deco-float deco-float-delay-1">🌸</span>
-          <span className="text-xl deco-float deco-float-delay-3">🌺</span>
-        </div>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-6 opacity-50" aria-hidden>
-          <span className="text-xl deco-float deco-float-delay-2">🌸</span>
-          <span className="text-2xl deco-float deco-float-delay-4">🌺</span>
-        </div>
-
-        {/* Năm Bính Ngọ */}
-        <div className="mb-6 bg-yellow-400/20 p-2 rounded-full border border-yellow-400/40 backdrop-blur-md shadow-lg">
-          <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 p-4 rounded-full shadow-inner">
-            <span className="text-white text-4xl" aria-hidden>🐴</span>
-          </div>
-        </div>
-
-        <h2 className="text-yellow-300 font-bold text-sm uppercase tracking-widest mb-1">
-          Xuân Bính Ngọ 2026
-        </h2>
-
-        {/* --- WELCOME: 3 option --- */}
-        {view === "welcome" && (
-          <>
-            <h1 className="text-white text-2xl font-extrabold leading-tight text-center mb-2">
-              Nhận lì xì Tết 2026
-            </h1>
-            <p className="text-white/80 text-sm text-center mb-8">
-              Chọn một trong các cách bên dưới
-            </p>
-            <div className="w-full max-w-xs flex flex-col gap-3">
-              <button
-                type="button"
-                onClick={handleNhanLixi}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 px-6 rounded-full shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95"
-              >
-                <span className="text-2xl">🧧</span>
-                Bốc lì xì
-              </button>
-              <a
-                href="/boc-lien-tuc"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-full border border-white/20 text-center flex items-center justify-center gap-2 transition-all"
-              >
-                Bốc liên tục
-              </a>
-              <a
-                href="/bang-xep-hang"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-full border border-white/20 text-center"
-              >
-                Bảng xếp hạng
-              </a>
-            </div>
-          </>
-        )}
-
-        {/* --- FORM: Tên/xưng hô + Ngân hàng + Số TK --- */}
-        {view === "form" && (
-          <>
-            <h1 className="text-white text-xl font-extrabold text-center mb-6">
-              Ai là người may mắn ?
-            </h1>
-            <form
-              onSubmit={handleSubmit}
-              className="w-full space-y-4 bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20"
-            >
-              <div>
-                <label htmlFor="nameOrTitle" className="block text-yellow-200 text-sm font-medium mb-1">
-                  Bạn là ai mà muốn nhận lì xì?
-                </label>
-                <input
-                  id="nameOrTitle"
-                  type="text"
-                  value={nameOrTitle}
-                  onChange={(e) => setNameOrTitle(e.target.value)}
-                  placeholder="Không quen không lì xì nha"
-                  disabled={isSubmitting}
-                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-              </div>
-              <div>
-                <label htmlFor="bank" className="block text-yellow-200 text-sm font-medium mb-1">
-                  Ngân hàng
-                </label>
-                <select
-                  id="bank"
-                  value={bankSelect}
-                  onChange={(e) => setBankSelect(e.target.value)}
-                  required
-                  disabled={isSubmitting}
-                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <option value="">-- Chọn ngân hàng --</option>
-                  {BANKS_VIETNAM.map((b) => (
-                    <option key={b} value={b}>
-                      {b}
-                    </option>
+        {/* Đèn lồng phía trên - có tua vàng */}
+        <div className="absolute top-0 left-0 right-0 flex justify-between px-8 pt-2 z-10">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className={`flex flex-col items-center lantern-sway ${i === 2 ? "lantern-sway" : ""}`} style={i === 2 ? { animationDelay: "0.5s" } : undefined}>
+              <div className="w-1 h-5 bg-yellow-400 rounded-full" />
+              <div className="w-10 h-12 bg-red-700 rounded-xl border-2 border-yellow-400 shadow-lg relative">
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-2 bg-yellow-500/90 rounded-b-sm" />
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5">
+                  {[1, 2, 3].map((t) => (
+                    <div key={t} className="w-0.5 h-2 bg-yellow-500/80 rounded-full" />
                   ))}
-                  <option value={BANK_OTHER}>{BANK_OTHER}</option>
-                </select>
-                {bankSelect === BANK_OTHER && (
-                  <input
-                    type="text"
-                    value={bankCustom}
-                    onChange={(e) => setBankCustom(e.target.value)}
-                    placeholder="Gõ tên ngân hàng..."
-                    disabled={isSubmitting}
-                    className="mt-2 w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  />
-                )}
-              </div>
-              <div>
-                <label htmlFor="account" className="block text-yellow-200 text-sm font-medium mb-1">
-                  Số tài khoản
-                </label>
-                <input
-                  id="account"
-                  type="text"
-                  inputMode="numeric"
-                  value={account}
-                  onChange={(e) => setAccount(e.target.value)}
-                  placeholder="Nhập số tài khoản"
-                  required
-                  disabled={isSubmitting}
-                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 rounded-full shadow-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-400 flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <span className="text-2xl animate-spin">🐴</span>
-                    <span>Đang xử lý...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>🧧</span>
-                    <span>Xác nhận nhận lì xì</span>
-                  </>
-                )}
-              </button>
-            </form>
-          </>
-        )}
-
-        {/* --- RECEIVED: Vừa submit xong - hiện số tiền + câu chúc --- */}
-        {view === "received" && saved && (
-          <>
-            <h1 className="text-white text-2xl font-extrabold text-center mb-1 chuc-mung-pop">
-              🎉 Chúc mừng bạn đã nhận lì xì!
-            </h1>
-            <p className="text-white/70 text-sm italic mb-6 celebrate-fade-in">
-              Lộc xuân đã về ví
-            </p>
-
-            <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl text-center celebrate-scale-in glow-pulse relative overflow-hidden">
-              <div className="absolute inset-0 shimmer-gold pointer-events-none rounded-2xl" aria-hidden />
-              <span className="text-yellow-300 text-sm font-medium uppercase tracking-tight block mb-2">
-                Số tiền lộc
-              </span>
-              <div className="flex items-baseline justify-center gap-1 relative">
-                <span className="text-white text-4xl font-black tracking-tight drop-shadow-md">
-                  {displayAmount}
-                </span>
-                <span className="text-yellow-400 text-xl font-bold">đ</span>
-              </div>
-              <div className="mt-4 flex items-center justify-center gap-2 text-white/50 text-xs uppercase tracking-widest">
-                <span className="w-8 h-px bg-white/20" />
-                <span>Phát tài - Phát lộc</span>
-                <span className="w-8 h-px bg-white/20" />
-              </div>
-            </div>
-
-            <LuckBar amount={saved.amount} />
-
-            <FakeComments amount={saved.amount} show={showReaction} />
-
-            <div className="mt-8 w-full text-center px-4 py-6 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl celebrate-fade-in">
-              <p className="font-calligraphy text-yellow-200 text-2xl leading-relaxed drop-shadow-md whitespace-pre-line">
-                &quot;{displayWish}&quot;
-              </p>
-            </div>
-
-            {displayId && (
-              <p className="text-white/40 text-xs mt-4">Mã giao dịch: {displayId}</p>
-            )}
-
-            <div className="mt-6 flex flex-col gap-3 w-full max-w-xs mx-auto">
-              <button
-                type="button"
-                onClick={handleNhanLixi}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
-              >
-                <span>🧧</span>
-                Bốc lì xì
-              </button>
-              <a
-                href="/boc-lien-tuc"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
-              >
-                Bốc liên tục
-              </a>
-              <a
-                href="/bang-xep-hang"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
-              >
-                Bảng xếp hạng
-              </a>
-            </div>
-          </>
-        )}
-
-        {/* --- ALREADY_RECEIVED: Đã nhận rồi - cùng hiệu ứng như lúc vừa nhận --- */}
-        {view === "already_received" && (
-          <>
-            <h1 className="text-white text-2xl font-extrabold text-center mb-1 chuc-mung-pop">
-              🎉 Bạn đã nhận lì xì rồi!
-            </h1>
-            <p className="text-white/70 text-sm italic mb-6 celebrate-fade-in">
-              Lộc xuân đã về ví, chúc mừng bạn!
-            </p>
-
-            {saved && (
-              <>
-                <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl text-center celebrate-scale-in glow-pulse relative overflow-hidden mb-6">
-                  <div className="absolute inset-0 shimmer-gold pointer-events-none rounded-2xl" aria-hidden />
-                  <span className="text-yellow-300 text-sm font-medium uppercase tracking-tight block mb-2">
-                    Số tiền lộc đã nhận
-                  </span>
-                  <div className="flex items-baseline justify-center gap-1 relative">
-                    <span className="text-white text-4xl font-black tracking-tight drop-shadow-md">
-                      {formatAmount(saved.amount)}
-                    </span>
-                    <span className="text-yellow-400 text-xl font-bold">đ</span>
-                  </div>
-                  <div className="mt-4 flex items-center justify-center gap-2 text-white/50 text-xs uppercase tracking-widest">
-                    <span className="w-8 h-px bg-white/20" />
-                    <span>Phát tài - Phát lộc</span>
-                    <span className="w-8 h-px bg-white/20" />
-                  </div>
                 </div>
-                <LuckBar amount={saved.amount} />
-                <FakeComments amount={saved.amount} show={showReaction} />
-              </>
-            )}
+              </div>
+            </div>
+          ))}
+        </div>
 
-            <div className="w-full text-center px-4 py-6 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl celebrate-fade-in">
-              <p className="font-calligraphy text-yellow-200 text-2xl leading-relaxed drop-shadow-md">
-                &quot;{getRandomWish()}&quot;
+        <main className="flex-1 flex flex-col items-center justify-center px-6 pt-20 pb-8 relative">
+          {/* Hoa mai trang trí hai bên */}
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-6 opacity-50" aria-hidden>
+            <span className="text-2xl deco-float deco-float-delay-1">🌸</span>
+            <span className="text-xl deco-float deco-float-delay-3">🌺</span>
+          </div>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-6 opacity-50" aria-hidden>
+            <span className="text-xl deco-float deco-float-delay-2">🌸</span>
+            <span className="text-2xl deco-float deco-float-delay-4">🌺</span>
+          </div>
+
+          {/* Năm Bính Ngọ */}
+          <div className="mb-6 bg-yellow-400/20 p-2 rounded-full border border-yellow-400/40 backdrop-blur-md shadow-lg">
+            <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 p-4 rounded-full shadow-inner">
+              <span className="text-white text-4xl" aria-hidden>🐴</span>
+            </div>
+          </div>
+
+          <h2 className="text-yellow-300 font-bold text-sm uppercase tracking-widest mb-1">
+            Xuân Bính Ngọ 2026
+          </h2>
+
+          {/* --- WELCOME: 3 option --- */}
+          {view === "welcome" && (
+            <>
+              <h1 className="text-white text-2xl font-extrabold leading-tight text-center mb-2">
+                Nhận lì xì Tết 2026
+              </h1>
+              <p className="text-white/80 text-sm text-center mb-8">
+                Chọn một trong các cách bên dưới
               </p>
-            </div>
-            <div className="mt-6 flex flex-col gap-3 w-full max-w-xs mx-auto">
-              <button
-                type="button"
-                onClick={handleNhanLixi}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
-              >
-                <span>🧧</span>
-                Bốc lì xì
-              </button>
-              <a
-                href="/boc-lien-tuc"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center flex items-center justify-center"
-              >
-                Bốc liên tục
-              </a>
-              <a
-                href="/bang-xep-hang"
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
-              >
-                Bảng xếp hạng
-              </a>
-            </div>
-          </>
-        )}
-      </main>
+              <div className="w-full max-w-xs flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={handleNhanLixi}
+                  className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 px-6 rounded-full shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95"
+                >
+                  <span className="text-2xl">🧧</span>
+                  Bốc lì xì
+                </button>
+                <a
+                  href="/boc-lien-tuc"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-full border border-white/20 text-center flex items-center justify-center gap-2 transition-all"
+                >
+                  Bốc liên tục
+                </a>
+                <a
+                  href="/bang-xep-hang"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-full border border-white/20 text-center"
+                >
+                  Bảng xếp hạng
+                </a>
+                <a
+                  href="/cau-hoi-thuong-gap"
+                  className="w-full bg-white/5 hover:bg-white/15 text-white font-medium py-3 px-4 rounded-full border border-white/10 text-center text-sm"
+                >
+                  Câu hỏi thường gặp
+                </a>
+              </div>
+            </>
+          )}
 
-      <footer className="p-6 pt-4 pb-8 bg-gradient-to-t from-black/20 to-transparent text-center relative">
-        <div className="flex justify-center gap-3 mb-2 opacity-60" aria-hidden>
-          <span className="text-sm">🧧</span>
-          <span className="text-sm">🪙</span>
-          <span className="text-sm">🌸</span>
-          <span className="text-sm">🪙</span>
-          <span className="text-sm">🧧</span>
-        </div>
-        <p className="text-white/50 text-xs">Lì xì Tết Bính Ngọ 2026</p>
-        <div className="flex justify-center gap-4 mt-2">
-          <a href="/boc-lien-tuc" className="text-yellow-300/80 text-xs hover:underline">
-            Bốc liên tục
-          </a>
-          <a href="/bang-xep-hang" className="text-yellow-300/80 text-xs hover:underline">
-            Bảng xếp hạng
-          </a>
-        </div>
-      </footer>
+          {/* --- FORM: Tên/xưng hô + Ngân hàng + Số TK --- */}
+          {view === "form" && (
+            <>
+              <h1 className="text-white text-xl font-extrabold text-center mb-6">
+                Ai là người may mắn ?
+              </h1>
+              <form
+                onSubmit={handleSubmit}
+                className="w-full space-y-4 bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20"
+              >
+                <div>
+                  <label htmlFor="nameOrTitle" className="block text-yellow-200 text-sm font-medium mb-1">
+                    Bạn là ai mà muốn nhận lì xì?
+                  </label>
+                  <input
+                    id="nameOrTitle"
+                    type="text"
+                    value={nameOrTitle}
+                    onChange={(e) => setNameOrTitle(e.target.value)}
+                    placeholder="Không quen không lì xì nha"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="bank" className="block text-yellow-200 text-sm font-medium mb-1">
+                    Ngân hàng
+                  </label>
+                  <select
+                    id="bank"
+                    value={bankSelect}
+                    onChange={(e) => setBankSelect(e.target.value)}
+                    required
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <option value="">-- Chọn ngân hàng --</option>
+                    {BANKS_VIETNAM.map((b) => (
+                      <option key={b} value={b}>
+                        {b}
+                      </option>
+                    ))}
+                    <option value={BANK_OTHER}>{BANK_OTHER}</option>
+                  </select>
+                  {bankSelect === BANK_OTHER && (
+                    <input
+                      type="text"
+                      value={bankCustom}
+                      onChange={(e) => setBankCustom(e.target.value)}
+                      placeholder="Gõ tên ngân hàng..."
+                      disabled={isSubmitting}
+                      className="mt-2 w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="account" className="block text-yellow-200 text-sm font-medium mb-1">
+                    Số tài khoản
+                  </label>
+                  <input
+                    id="account"
+                    type="text"
+                    inputMode="numeric"
+                    value={account}
+                    onChange={(e) => setAccount(e.target.value)}
+                    placeholder="Nhập số tài khoản"
+                    required
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 rounded-full shadow-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-400 flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="text-2xl animate-spin">🐴</span>
+                      <span>Đang xử lý...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🧧</span>
+                      <span>Xác nhận nhận lì xì</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            </>
+          )}
+
+          {/* --- RECEIVED: Vừa submit xong - hiện số tiền + câu chúc --- */}
+          {view === "received" && saved && (
+            <>
+              <h1 className="text-white text-2xl font-extrabold text-center mb-1 chuc-mung-pop">
+                🎉 Chúc mừng bạn đã nhận lì xì!
+              </h1>
+              <p className="text-white/70 text-sm italic mb-6 celebrate-fade-in">
+                Lộc xuân đã về ví
+              </p>
+
+              <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl text-center celebrate-scale-in glow-pulse relative overflow-hidden">
+                <div className="absolute inset-0 shimmer-gold pointer-events-none rounded-2xl" aria-hidden />
+                <span className="text-yellow-300 text-sm font-medium uppercase tracking-tight block mb-2">
+                  Số tiền lộc
+                </span>
+                <div className="flex items-baseline justify-center gap-1 relative">
+                  <span className="text-white text-4xl font-black tracking-tight drop-shadow-md">
+                    {displayAmount}
+                  </span>
+                  <span className="text-yellow-400 text-xl font-bold">đ</span>
+                </div>
+                <div className="mt-4 flex items-center justify-center gap-2 text-white/50 text-xs uppercase tracking-widest">
+                  <span className="w-8 h-px bg-white/20" />
+                  <span>Phát tài - Phát lộc</span>
+                  <span className="w-8 h-px bg-white/20" />
+                </div>
+              </div>
+
+              {/* Chú thích vui về việc gửi lì xì */}
+              <p className="text-white text-sm text-center leading-relaxed mt-4">
+                <span className="text-yellow-300 font-semibold">💡 Lưu ý:</span>{" "}
+                Lì xì sẽ được gửi khi{" "}
+                <span className="text-yellow-300 font-semibold italic">
+                  bạn làm tôi cười hihi 😄
+                </span>
+              </p>
+
+              <LuckBar amount={saved.amount} />
+
+              <FakeComments amount={saved.amount} show={showReaction} />
+
+              <div className="mt-8 w-full text-center px-4 py-6 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl celebrate-fade-in">
+                <p className="font-calligraphy text-yellow-200 text-2xl leading-relaxed drop-shadow-md whitespace-pre-line">
+                  &quot;{displayWish}&quot;
+                </p>
+              </div>
+
+              {displayId && (
+                <p className="text-white/40 text-xs mt-4">Mã giao dịch: {displayId}</p>
+              )}
+
+              <div className="mt-6 flex flex-col gap-3 w-full max-w-xs mx-auto">
+                <button
+                  type="button"
+                  onClick={handleNhanLixi}
+                  className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+                >
+                  <span>🧧</span>
+                  Bốc lì xì
+                </button>
+                <a
+                  href="/boc-lien-tuc"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
+                >
+                  Bốc liên tục
+                </a>
+                <a
+                  href="/bang-xep-hang"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
+                >
+                  Bảng xếp hạng
+                </a>
+              </div>
+            </>
+          )}
+
+          {/* --- ALREADY_RECEIVED: Đã nhận rồi - cùng hiệu ứng như lúc vừa nhận --- */}
+          {view === "already_received" && (
+            <>
+              <h1 className="text-white text-2xl font-extrabold text-center mb-1 chuc-mung-pop">
+                🎉 Bạn đã nhận lì xì rồi!
+              </h1>
+              <p className="text-white/70 text-sm italic mb-6 celebrate-fade-in">
+                Lộc xuân đã về ví, chúc mừng bạn!
+              </p>
+
+              {saved && (
+                <>
+                  <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl text-center celebrate-scale-in glow-pulse relative overflow-hidden mb-6">
+                    <div className="absolute inset-0 shimmer-gold pointer-events-none rounded-2xl" aria-hidden />
+                    <span className="text-yellow-300 text-sm font-medium uppercase tracking-tight block mb-2">
+                      Số tiền lộc đã nhận
+                    </span>
+                    <div className="flex items-baseline justify-center gap-1 relative">
+                      <span className="text-white text-4xl font-black tracking-tight drop-shadow-md">
+                        {formatAmount(saved.amount)}
+                      </span>
+                      <span className="text-yellow-400 text-xl font-bold">đ</span>
+                    </div>
+                    <div className="mt-4 flex items-center justify-center gap-2 text-white/50 text-xs uppercase tracking-widest">
+                      <span className="w-8 h-px bg-white/20" />
+                      <span>Phát tài - Phát lộc</span>
+                      <span className="w-8 h-px bg-white/20" />
+                    </div>
+                  </div>
+                  {/* Chú thích vui về việc gửi lì xì */}
+                  <div className="mt-6 w-full max-w-md mx-auto px-4 py-4 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-xl border border-yellow-400/30 backdrop-blur-sm celebrate-fade-in">
+                    <p className="text-white text-sm text-center leading-relaxed">
+                      <span className="text-yellow-300 font-semibold">💡 Lưu ý vui:</span>{" "}
+                      Lì xì sẽ được gửi khi{" "}
+                      <span className="text-yellow-300 font-semibold italic">
+                        bạn làm tôi cười hihi 😄
+                      </span>
+                    </p>
+                  </div>
+                  <LuckBar amount={saved.amount} />
+                  <FakeComments amount={saved.amount} show={showReaction} />
+                </>
+              )}
+
+              <div className="w-full text-center px-4 py-6 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl celebrate-fade-in">
+                <p className="font-calligraphy text-yellow-200 text-2xl leading-relaxed drop-shadow-md">
+                  &quot;{getRandomWish()}&quot;
+                </p>
+              </div>
+              <div className="mt-6 flex flex-col gap-3 w-full max-w-xs mx-auto">
+                <button
+                  type="button"
+                  onClick={handleNhanLixi}
+                  className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-3 px-4 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+                >
+                  <span>🧧</span>
+                  Bốc lì xì
+                </button>
+                <a
+                  href="/boc-lien-tuc"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center flex items-center justify-center"
+                >
+                  Bốc liên tục
+                </a>
+                <a
+                  href="/bang-xep-hang"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-full border border-white/20 text-center"
+                >
+                  Bảng xếp hạng
+                </a>
+              </div>
+            </>
+          )}
+        </main>
+
+        <footer className="p-6 pt-4 pb-8 bg-gradient-to-t from-black/20 to-transparent text-center relative">
+          <div className="flex justify-center gap-3 mb-2 opacity-60" aria-hidden>
+            <span className="text-sm">🧧</span>
+            <span className="text-sm">🪙</span>
+            <span className="text-sm">🌸</span>
+            <span className="text-sm">🪙</span>
+            <span className="text-sm">🧧</span>
+          </div>
+          <p className="text-white/50 text-xs">Lì xì Tết Bính Ngọ 2026</p>
+          <div className="flex justify-center gap-4 mt-2">
+            <a href="/boc-lien-tuc" className="text-yellow-300/80 text-xs hover:underline">
+              Bốc liên tục
+            </a>
+            <a href="/bang-xep-hang" className="text-yellow-300/80 text-xs hover:underline">
+              Bảng xếp hạng
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ export function LuckBar({ amount }: { amount: number | null }) {
   const luckText = getLuckText(luck);
 
   return (
-    <div className="w-full max-w-xs mb-4">
+    <div className="w-full max-w-xs mb-4 mt-4">
       <div className="flex items-center justify-between mb-2">
         <span className="text-white/80 text-xs font-medium">Vận may hôm nay</span>
         <span className="text-yellow-300 text-xs font-bold">{luck}%</span>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Great_Vibes } from "next/font/google";
 import { PWAInstaller } from "./components/PWAInstaller";
+import { FAQButton } from "./components/FAQButton";
 import "./globals.css";
 
 const beVietnam = Be_Vietnam_Pro({
@@ -68,6 +69,7 @@ export default function RootLayout({
       >
         {children}
         <PWAInstaller />
+        <FAQButton />
       </body>
     </html>
   );

@@ -38,6 +38,7 @@ export default function Home() {
   const [bankCustom, setBankCustom] = useState("");
   const [account, setAccount] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showFireworks, setShowFireworks] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showEmojiConfetti, setShowEmojiConfetti] = useState(false);
@@ -83,8 +84,9 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const bank = bankSelect === BANK_OTHER ? bankCustom.trim() : bankSelect;
-    if (!bank || !account.trim()) return;
+    if (!bank || !account.trim() || isSubmitting) return;
 
+    setIsSubmitting(true);
     try {
       const res = await fetch("/api/telegram-notify", {
         method: "POST",
@@ -99,6 +101,7 @@ export default function Home() {
       const result = await res.json();
       if (!result.ok) {
         alert(result.error || "Lỗi khi nhận lì xì");
+        setIsSubmitting(false);
         return;
       }
 
@@ -122,6 +125,7 @@ export default function Home() {
       playCelebrationSound(data.amount);
     } catch (e) {
       alert("Lỗi kết nối. Vui lòng thử lại.");
+      setIsSubmitting(false);
     }
   };
 
@@ -314,7 +318,8 @@ export default function Home() {
                   value={nameOrTitle}
                   onChange={(e) => setNameOrTitle(e.target.value)}
                   placeholder="Không quen không lì xì nha"
-                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
               <div>
@@ -326,7 +331,8 @@ export default function Home() {
                   value={bankSelect}
                   onChange={(e) => setBankSelect(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">-- Chọn ngân hàng --</option>
                   {BANKS_VIETNAM.map((b) => (
@@ -342,7 +348,8 @@ export default function Home() {
                     value={bankCustom}
                     onChange={(e) => setBankCustom(e.target.value)}
                     placeholder="Gõ tên ngân hàng..."
-                    className="mt-2 w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 )}
               </div>
@@ -358,14 +365,26 @@ export default function Home() {
                   onChange={(e) => setAccount(e.target.value)}
                   placeholder="Nhập số tài khoản"
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-500 border border-white/30 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 rounded-full shadow-xl transition-all active:scale-95"
+                disabled={isSubmitting}
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-red-800 font-bold py-4 rounded-full shadow-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-400 flex items-center justify-center gap-2"
               >
-                Xác nhận nhận lì xì
+                {isSubmitting ? (
+                  <>
+                    <span className="text-2xl animate-spin">🐴</span>
+                    <span>Đang xử lý...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>🧧</span>
+                    <span>Xác nhận nhận lì xì</span>
+                  </>
+                )}
               </button>
             </form>
           </>
